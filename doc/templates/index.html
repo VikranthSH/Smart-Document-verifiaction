@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ID Verification</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>SMART DOCUMENT VERIFICATION </h1>
+        <form action="/submit" method="POST" enctype="multipart/form-data">
+            <label>Name:</label>
+            <input type="text" name="name" required placeholder="Enter your full name">
+
+            <label>Date of Birth (DD-MM-YYYY):</label>
+            <input type="text" name="dob" required pattern="\d{2}-\d{2}-\d{4}" placeholder="DD-MM-YYYY">
+
+            <label>Aadhaar Number:</label>
+            <input type="text" name="aadhar" required pattern="\d{4}\s?\d{4}\s?\d{4}" maxlength="14" placeholder="1234 5678 9012">
+
+            <label>Mobile Number:</label>
+            <input type="text" name="mobile" required pattern="(0|91)?[6789]\d{9}" maxlength="13" placeholder="10 digit mobile number">
+
+            <label>Upload Aadhaar Card Image:</label>
+            <input type="file" name="aadhar_img" accept=".jpg,.jpeg,.png,.pdf" required>
+
+            <label>Upload 10th Marks Card Image:</label>
+            <input type="file" name="marks_img" accept=".jpg,.jpeg,.png,.pdf" required>
+
+            <button type="submit">Compare</button>
+        </form>
+        <p style="margin-top:15px; color:#888; font-size:0.95em;">
+            <b>Note:</b> Please enter your details exactly as they appear on your documents.<br>
+            Date of Birth must be in <b>DD-MM-YYYY</b> format.<br>
+            Aadhaar number must be 12 digits (with or without spaces).
+        </p>
+    </div>
+</body>
+</html>

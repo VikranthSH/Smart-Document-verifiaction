@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+    <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: 'Segoe UI', sans-serif;
+            padding: 30px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 90%;
+            margin: 30px auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 14px;
+            text-align: center;
+        }
+        th {
+            background-color: #6c757d;
+            color: white;
+        }
+        h2 {
+            text-align: center;
+            color: #343a40;
+        }
+        /* Status styling */
+        .match {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .mismatch {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .partial {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        .missing {
+            color: #6c757d;
+            font-style: italic;
+        }
+        .debug-info {
+            background-color: #f8f9fa;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #dee2e6;
+            font-size: 12px;
+        }
+        .nav-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 10px;
+        }
+        .nav-button:hover {
+            background-color: #0056b3;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .action-buttons {
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align: center; color: #343a40; margin-bottom: 30px;">ID Verification Results</h1>
+        
+        <!-- Debug information (can be removed in production) -->
+        <div class="debug-info">
+            <h3>Debug Information</h3>
+            <p><strong>User Input:</strong> {{ user_data }}</p>
+            <p><strong>Extracted from Aadhaar:</strong> {{ aadhar_info }}</p>
+            <p><strong>Extracted from Marksheet:</strong> {{ marks_info }}</p>
+        </div>
+        
+        <h2>Comparison with Aadhaar Card</h2>
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>User Input</th>
+                <th>Extracted from Aadhaar</th>
+                <th>Status</th>
+            </tr>
+            {% for key in ['Name', 'DOB', 'Aadhar', 'Mobile'] %}
+            <tr>
+                <td>{{ key }}</td>
+                <td>{{ user_data.get(key, 'N/A') }}</td>
+                <td>{{ aadhar_info.get(key, 'N/A') }}</td>
+                <td class="{% if '✅' in aadhar_result.get(key, '') %}match{% elif '❌' in aadhar_result.get(key, '') %}mismatch{% elif '⚠' in aadhar_result.get(key, '') %}partial{% else %}missing{% endif %}">
+                    {{ aadhar_result.get(key, 'N/A') }}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <h2>Comparison with 10th Marks Card</h2>
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>User Input</th>
+                <th>Extracted from Marks Card</th>
+                <th>Status</th>
+            </tr>
+            {% for key in ['Name', 'DOB', 'Aadhar', 'Mobile'] %}
+            <tr>
+                <td>{{ key }}</td>
+                <td>{{ user_data.get(key, 'N/A') }}</td>
+                <td>{{ marks_info.get(key, 'N/A') }}</td>
+                <td class="{% if '✅' in marks_result.get(key, '') %}match{% elif '❌' in marks_result.get(key, '') %}mismatch{% elif '⚠' in marks_result.get(key, '') %}partial{% else %}missing{% endif %}">
+                    {{ marks_result.get(key, 'N/A') }}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <div class="action-buttons">
+            <a href="/" class="nav-button">Verify Another Document</a>
+        </div>
+    </div>
+</body>
+</html>
